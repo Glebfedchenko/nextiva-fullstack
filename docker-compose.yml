@@ -1,0 +1,32 @@
+
+version: '2'
+services:
+  api:
+    build: .
+    volumes:
+      - .:/app
+    image: recompose
+    ports:
+      - "7000:7000"
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES=postgres://postgres:@localhost:5432/tymofiisavytsky
+      - FRONTEND_URI=http://localhost:8080
+
+#  migration:
+#      image: recompose
+#      command: db-migrate up --config config/db.json
+#      depends_on:
+#        - postgres
+#      links:
+#        - postgres
+
+  postgres:
+    ports:
+      - "5432"
+    image: postgres:9.6.2-alpine
+    environment:
+      POSTGRES_USER: tymofiisavytsky
+      POSTGRES_DB: recompose
+      POSTGRES_PASSWORD: ''
